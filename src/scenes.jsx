@@ -161,7 +161,7 @@ function PixelStage({ vbW = 200, vbH = 112, children }) {
   return (
     <svg
       viewBox={`0 0 ${vbW} ${vbH}`}
-      preserveAspectRatio="xMidYMax slice"
+      preserveAspectRatio="xMidYMid slice"
       shapeRendering="crispEdges"
       style={{ position: "absolute", inset: 0, width: "100%", height: "100%" }}
     >
@@ -906,7 +906,7 @@ function SceneMeadow() {
 
         {/* Rayquaza coiled in the sky on the right */}
         {(() => {
-          const h = 18, w = h * window.RAYQUAZA_AR, rcx = 176, footY = 30;
+          const h = 17, w = h * window.RAYQUAZA_AR, rcx = 172, footY = 40;
           return (
             <g>
               <g style={{ transformBox: "fill-box", transformOrigin: "center", animation: "birdFloat 4.5s ease-in-out infinite" }}>

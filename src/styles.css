@@ -211,10 +211,10 @@ html, body, #root {
   z-index: 4;
   flex: 1;
   display: grid;
-  grid-template-columns: minmax(220px, 260px) 1fr;
-  gap: 20px;
-  padding: 18px 22px 22px;
-  max-width: 1320px;
+  grid-template-columns: minmax(200px, 232px) 1fr;
+  gap: 18px;
+  padding: 16px 20px 20px;
+  max-width: 1160px;
   width: 100%;
   margin: 0 auto;
 }
@@ -229,6 +229,12 @@ html, body, #root {
   .tab { padding: 8px 9px; font-size: 7px; gap: 6px; }
   .tab .tab-icon { width: 10px; height: 10px; }
   .hud .brand-sub { display: none; }
+
+  /* QuestSelect: show only the active chip so the row can't stretch off-screen;
+     the ◀ ▶ arrows page through the rest. */
+  .quest-chips { flex: 1; justify-content: center; overflow-x: hidden; }
+  .quest-chip { display: none; }
+  .quest-chip.active { display: flex; flex: 1; justify-content: center; }
 }
 
 /* ===== character card (left) ===== */
@@ -348,7 +354,7 @@ html, body, #root {
 /* ===== panel (right) ===== */
 .panel-wrap {
   position: relative;
-  min-height: 560px;
+  min-height: 480px;
 }
 .tabs {
   display: flex; flex-wrap: wrap; gap: 6px;
