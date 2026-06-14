@@ -894,6 +894,16 @@ function SceneMeadow() {
 
         {/* third pine ridge — mid-dark */}
         <FirRow baseY={75} halfW={9} h={26} fill="#3f7a64" step={13} band={6} />
+        {/* ===== Eye Tower — tall static tower on the right, rising from behind the front pines ===== */}
+        {(() => {
+          const h = 56, w = h * window.EYE_TOWER_AR, cx = 170, footY = 88;
+          return (
+            <image href={window.EYE_TOWER_SRC} xlinkHref={window.EYE_TOWER_SRC}
+              x={cx - w / 2} y={footY - h} width={w} height={h}
+              preserveAspectRatio="xMidYMax meet" style={{ imageRendering: "pixelated" }} />
+          );
+        })()}
+
         {/* nearest pine wall — darkest & tallest */}
         <FirRow baseY={83} halfW={11} h={35} fill="#1d3f3b" step={15} band={8} />
 
@@ -906,7 +916,7 @@ function SceneMeadow() {
 
         {/* Rayquaza coiled in the sky on the right */}
         {(() => {
-          const h = 17, w = h * window.RAYQUAZA_AR, rcx = 172, footY = 40;
+          const h = 16, w = h * window.RAYQUAZA_AR, rcx = 167, footY = 33;
           return (
             <g>
               <g style={{ transformBox: "fill-box", transformOrigin: "center", animation: "birdFloat 4.5s ease-in-out infinite" }}>
@@ -948,6 +958,17 @@ function SceneMeadow() {
         <KnightSprite src={window.ESQUIE_SRC} cx={20} footY={82} h={28} ar={window.ESQUIE_AR} flip
           name="Esquie" tagColor="#e9c97a" shadow={false} anim="charIdle 3s ease-in-out infinite" />
 
+        {/* ===== Plants vs. Zombies cameo on the lime grass, centre of the meadow ===== */}
+        {/* Sunflower (left of the pair) */}
+        <KnightSprite src={window.PVZ.sunflower} cx={84} footY={81} h={10} ar={window.PVZ_AR.sunflower}
+          name="Sunflower" tagColor="#ffd34d" shadow={false} tagGap={5} anim="charIdle 2.8s ease-in-out infinite" />
+        {/* Peashooter (just right of the sunflower, facing the approaching zombie) */}
+        <KnightSprite src={window.PVZ.peashooter} cx={95} footY={81} h={11} ar={window.PVZ_AR.peashooter}
+          name="Peashooter" tagColor="#7ed957" shadow={false} tagGap={11} anim="charIdle 3s ease-in-out infinite" />
+        {/* Zombie — further right, shambling in toward the plants (faces left) */}
+        <KnightSprite src={window.PVZ.zombie} cx={124} footY={81} h={14} ar={window.PVZ_AR.zombie}
+          name="Zombie" tagColor="#b9c0a8" shadow={false} anim="charIdle 3.6s ease-in-out infinite" />
+
         {/* Barry — bear standing on the grass at the right (faces left) */}
         <KnightSprite src={window.BARRY_SRC} cx={176} footY={82} h={20} ar={window.BARRY_AR}
           name="Barry" tagColor="#e8b8b0" shadow={false} anim="charIdle 3.5s ease-in-out infinite" />
@@ -968,7 +989,7 @@ function SceneCave() {
     { x: 38,  y: 74, c: "#b48cff", h: "#dabaff", d: "#6840a8" },
     { x: 64,  y: 80, c: "#6ee7ff", h: "#bef3ff", d: "#2a8fb8" },
     { x: 90,  y: 72, c: "#ff9ad8", h: "#ffc8e8", d: "#a83878" },
-    { x: 116, y: 78, c: "#6ee7ff", h: "#bef3ff", d: "#2a8fb8" },
+    { x: 116, y: 78, c: "#6ee7ff", h: "#bef3ff", d: "#2a8fb8", face: true },
     { x: 140, y: 76, c: "#ffd866", h: "#fff0a8", d: "#a87818" },
     { x: 164, y: 80, c: "#b48cff", h: "#dabaff", d: "#6840a8" },
     { x: 184, y: 74, c: "#6ee7ff", h: "#bef3ff", d: "#2a8fb8" },
@@ -1026,6 +1047,12 @@ function SceneCave() {
 
         {/* crystals — 4 shades each: outline + dark + mid + highlight */}
         {crystals.map((cr, i) => (
+          cr.face ? (
+            <image key={i} href={window.SKILLFACE_SRC} xlinkHref={window.SKILLFACE_SRC}
+              x={cr.x + 3 - (12 * window.SKILLFACE_AR) / 2} y={cr.y - 11} width={12 * window.SKILLFACE_AR} height={12}
+              preserveAspectRatio="xMidYMax meet"
+              style={{ imageRendering: "pixelated", filter: "drop-shadow(0 0 3px #ffd34d)" }} />
+          ) : (
           <g key={i} style={{ filter: `drop-shadow(0 0 4px ${cr.c})` }}>
             {/* dark outline */}
             <rect x={cr.x + 2} y={cr.y - 7} width="2" height="1" fill={cr.d} />
@@ -1044,6 +1071,7 @@ function SceneCave() {
             <rect x={cr.x + 2} y={cr.y - 5} width="1" height="4" fill={cr.h} />
             <rect x={cr.x + 1} y={cr.y - 4} width="1" height="1" fill={cr.h} />
           </g>
+          )
         ))}
 
         {/* ground */}
@@ -1245,6 +1273,38 @@ function BookRow({ x, y, colors, h = 5 }) {
         return <rect key={i} x={x + i * 2} y={y + (h - bh)} width="2" height={bh} fill={c} />;
       })}
     </>
+  );
+}
+
+// wall shelf holding a single item, with a wooden label tag hanging below the plank
+function WoodShelf({ cx, plankY, plankW = 22, item, itemH, itemAR, label, labelPx = 0.42, flip = false }) {
+  const iw = itemH * itemAR;
+  const lw = label ? measurePixel(label, labelPx, 1) + 4 : 0;
+  return (
+    <g>
+      {/* item resting on the plank */}
+      <image href={item} xlinkHref={item}
+        x={cx - iw / 2} y={plankY - itemH} width={iw} height={itemH}
+        preserveAspectRatio="xMidYMax meet"
+        style={{ imageRendering: "pixelated", transform: flip ? "scaleX(-1)" : "none", transformBox: "fill-box", transformOrigin: "center" }} />
+      {/* plank */}
+      <rect x={cx - plankW / 2} y={plankY} width={plankW} height="2.4" fill="#5a3a1c" />
+      <rect x={cx - plankW / 2} y={plankY} width={plankW} height="0.8" fill="#7c552c" />
+      <rect x={cx - plankW / 2} y={plankY + 2} width={plankW} height="0.4" fill="#2e1c0c" />
+      {/* end brackets */}
+      <polygon points={`${cx - plankW / 2},${plankY + 2.4} ${cx - plankW / 2 + 3},${plankY + 2.4} ${cx - plankW / 2},${plankY + 6}`} fill="#3e2814" />
+      <polygon points={`${cx + plankW / 2},${plankY + 2.4} ${cx + plankW / 2 - 3},${plankY + 2.4} ${cx + plankW / 2},${plankY + 6}`} fill="#3e2814" />
+      {/* optional hanging wooden label tag */}
+      {label ? (
+        <g>
+          <rect x={cx - 0.4} y={plankY + 2.4} width="0.8" height="1.6" fill="#2e1c0c" />
+          <rect x={cx - lw / 2} y={plankY + 4} width={lw} height="6" fill="#6a4422" />
+          <rect x={cx - lw / 2} y={plankY + 4} width={lw} height="1" fill="#86592e" />
+          <rect x={cx - lw / 2} y={plankY + 9} width={lw} height="1" fill="#3a2410" />
+          <PixelText text={label} x={cx - lw / 2 + 2} y={plankY + 5.4} px={labelPx} color="#f2e2c2" />
+        </g>
+      ) : null}
+    </g>
   );
 }
 const BOOKS_A = ["#b03028", "#2a6a9a", "#c2902a", "#3a7a3a", "#7a3a8a", "#a85020"];
@@ -1483,8 +1543,6 @@ function SceneTown() {
               {/* ripple lines around where it breaks the surface */}
               <rect x={cx - 16} y={surfaceY} width="12" height="1" fill="#8fe0e6" opacity="0.7" />
               <rect x={cx + 6} y={surfaceY} width="14" height="1" fill="#8fe0e6" opacity="0.6" />
-              {/* name tag over the sprite, near his lower body */}
-              <NameTag cx={cx} top={footY - 5} text="Reaper Leviathan" color="#c87a72" />
             </g>
           );
         })()}
@@ -1725,6 +1783,8 @@ function SceneTown() {
         {/* Creeper — perched on the right side of the red house roof */}
         <KnightSprite src={window.MC.creeper} cx={181} footY={40} h={14} ar={window.MC_AR.creeper} flip
           name="Creeper" tagColor="#8fd44f" shadow={false} tagGap={2} anim="charIdle 2.6s ease-in-out infinite" />
+        {/* Reaper Leviathan name tag — rendered last so the house can't cover it */}
+        <NameTag cx={144} top={82} text="Reaper Leviathan" color="#c87a72" />
       </PixelStage>
       <Particles count={22} kind="firefly" color="#aef0a0" />
       <Particles count={10} kind="firefly" color="#8affd8" />
@@ -1767,20 +1827,6 @@ function SceneForge() {
         <rect x="0" y="0" width="200" height="6" fill="#1a0a04" />
         <rect x="0" y="0" width="200" height="2" fill="#3a2010" />
 
-        {/* hanging tools */}
-        <rect x="36" y="6" width="1" height="14" fill="#0a0604" />
-        <rect x="32" y="20" width="9" height="3" fill="#5a4030" />
-        <rect x="32" y="20" width="9" height="1" fill="#8a6450" />
-        <rect x="32" y="22" width="9" height="1" fill="#3a2818" />
-        <rect x="66"  y="6"  width="1" height="10" fill="#0a0604" />
-        <rect x="60"  y="16" width="13" height="2" fill="#5a4030" />
-        <rect x="60"  y="16" width="13" height="1" fill="#8a6450" />
-        <rect x="60"  y="18" width="2" height="6" fill="#5a4030" />
-        <rect x="71"  y="18" width="2" height="6" fill="#5a4030" />
-        <rect x="142" y="6"  width="1" height="16" fill="#0a0604" />
-        <rect x="138" y="22" width="9" height="4" fill="#5a4030" />
-        <rect x="138" y="22" width="9" height="1" fill="#8a6450" />
-
         {/* forge — shaded brick */}
         <g transform="translate(70, 60)">
           <rect x="0" y="20" width="60" height="22" fill="#1a0a06" />
@@ -1810,33 +1856,12 @@ function SceneForge() {
         <rect x="32" y="91" width="2" height="1" fill="#ff5a18" />
         <rect x="36" y="91" width="2" height="1" fill="#ff5a18" />
 
-        {/* sword rack on the wall (right side) */}
-        <g transform="translate(160, 36)">
-          <Sprite rows={PIXEL_SWORDS.rows} palette={PIXEL_SWORDS.palette} />
-        </g>
-        {/* horizontal bar under the rack */}
-        <rect x="158" y="56" width="20" height="2" fill="#3a2010" />
-        <rect x="158" y="56" width="20" height="1" fill="#5a3a18" />
-
         {/* water barrel (grounded), in the gap before the forge */}
         <g transform="translate(60, 91)">
           <Sprite rows={PIXEL_BARREL.rows} palette={PIXEL_BARREL.palette} />
         </g>
         {/* small water surface highlight on barrel */}
         <rect x="61" y="91" width="8" height="1" fill="#3a6080" opacity="0.7" />
-
-        {/* bellows hanging on left wall */}
-        <g transform="translate(18, 40)">
-          <Sprite rows={PIXEL_BELLOWS.rows} palette={PIXEL_BELLOWS.palette} />
-        </g>
-        {/* bellows pipe extending right toward forge */}
-        <rect x="35" y="48" width="36" height="2" fill="#5a3a18" />
-        <rect x="35" y="48" width="36" height="1" fill="#8a5a28" />
-
-        {/* tongs on the wall */}
-        <rect x="56" y="36" width="1" height="14" fill="#0a0604" />
-        <rect x="52" y="50" width="2" height="6" fill="#3a2818" />
-        <rect x="58" y="50" width="2" height="6" fill="#3a2818" />
 
         {/* water trough on the right */}
         <g transform="translate(176, 92)">
@@ -1868,6 +1893,28 @@ function SceneForge() {
           name="Claptrap" tagColor="#ffd34d" shadow anim="charIdle 3.2s ease-in-out infinite" />
         <KnightSprite src={window.KNIGHTS.orange} cx={166} footY={100} h={18} ar={0.9}
           name="Orange" tagColor="#ffae4a" anim="charIdle 3s ease-in-out infinite" />
+
+        {/* ===== display items mounted on the side walls, clear of the info panel ===== */}
+        {/* LEFT side — Big Pot + Skyrim Helmet on small shelves */}
+        <WoodShelf cx={20} plankY={42} plankW={16} item={window.ITEMS.pot}    itemH={11} itemAR={window.ITEMS_AR.pot} />
+        <WoodShelf cx={20} plankY={64} plankW={16} item={window.ITEMS.helmet} itemH={12} itemAR={window.ITEMS_AR.helmet} />
+        {/* RIGHT side — the two guns on small shelves */}
+        <WoodShelf cx={180} plankY={42} plankW={16} item={window.ITEMS.raygun} itemH={7} itemAR={window.ITEMS_AR.raygun} />
+        <WoodShelf cx={180} plankY={64} plankW={16} item={window.ITEMS.pgun}   itemH={7} itemAR={window.ITEMS_AR.pgun} />
+
+        {/* Starfly — small blue dragon, flipped, floating to the left of Claptrap */}
+        {(() => {
+          const h = 6, w = h * window.ITEMS_AR.starfly, cx = 108, midY = 84;
+          return (
+            <g style={{ transformBox: "fill-box", transformOrigin: "center", animation: "birdFloat 3.4s ease-in-out infinite" }}>
+              <image href={window.ITEMS.starfly} xlinkHref={window.ITEMS.starfly}
+                x={cx - w / 2} y={midY - h} width={w} height={h}
+                preserveAspectRatio="xMidYMax meet"
+                style={{ imageRendering: "pixelated", transform: "scaleX(-1)", transformBox: "fill-box", transformOrigin: "center" }} />
+              <NameTag cx={cx} top={midY - h - 4} text="Starfly" color="#7ec8ff" px={0.4} />
+            </g>
+          );
+        })()}
 
       </PixelStage>
       <Particles count={40} kind="spark" color="#ffa040" />
@@ -2210,6 +2257,8 @@ const PIXEL_FONT = {
   "R": ["###.", "#..#", "###.", "#.#.", "#..#"],
   "T": ["###", ".#.", ".#.", ".#.", ".#."],
   "B": ["###.", "#..#", "###.", "#..#", "###."],
+  "Z": ["###", "..#", ".#.", "#..", "###"],
+  "P": ["###.", "#..#", "###.", "#...", "#..."],
   "G": [".###", "#...", "#.##", "#..#", ".###"],
   "O": [".##.", "#..#", "#..#", "#..#", ".##."],
   "C": [".###", "#...", "#...", "#...", ".###"],
@@ -2476,8 +2525,8 @@ function SceneMountain() {
             preserveAspectRatio="xMidYMax meet"
             style={{ imageRendering: "pixelated", transformBox: "fill-box", transformOrigin: "center", transform: "scaleX(-1)" }} />
         </g>
-        {/* Caligo name tag */}
-        <NameTag cx={184} top={10} text="Caligo" color="#dfe8f1" px={0.5} />
+        {/* Caligo name tag — placed BELOW the dragon so the top HP/XP bar can't cover it */}
+        <NameTag cx={184} top={35} text="Caligo" color="#dfe8f1" px={0.5} />
 
         {/* ===== glowing golden tree (center background, between the peaks) — bare branches, gently sways ===== */}
         <GoldenTree baseX={96} baseY={80} trunkLen={15} depth={8} />

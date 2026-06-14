@@ -182,6 +182,7 @@ function ProjectsPanel() {
   const labels = items.map(p => p.name
     .replace("Project Zombie — Roguelite", "P.ZOMBIE")
     .replace("APParel — Interactive Web CTF Lab", "APPAREL CTF")
+    .replace("EVolocity Wireless Telemetry Dashboard", "EVOLOCITY")
     .replace("Solar-Powered Micro Data Centre", "SOLAR MDC")
     .replace("AUSA Website — WDCC", "AUSA")
     .replace("Guess Who", "GUESS WHO")
@@ -212,7 +213,7 @@ function ProjectsPanel() {
           </div>
         )}
       />
-      <div className="dialog">Gold glints. Pick a slot to inspect the loot inside.</div>
+      <div className="dialog">Neon hums over the city. Step into a building to see what was built inside.</div>
     </div>
   );
 }
@@ -243,7 +244,7 @@ function AchievementsPanel() {
           </div>
         )}
       />
-      <div className="dialog">Wind whistles past the peak. Plant a flag, descend, repeat.</div>
+      <div className="dialog">Ascend the peak and confront the dragon to claim the knowledge it guards.</div>
     </div>
   );
 }

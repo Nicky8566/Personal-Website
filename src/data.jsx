@@ -103,6 +103,17 @@ window.CV = {
         "Contributed to a seven-person Agile team delivering a deliberately vulnerable MERN e-commerce platform with twelve embedded CTF challenges, 333 automated tests, and CI/CD via GitHub Actions.",
       ],
     },
+    {
+      name: "EVolocity Wireless Telemetry Dashboard",
+      role: "Full-Stack Developer",
+      period: "Feb 2026 — Jun 2026",
+      tech: ["Node.js", "Express", "WebSocket", "SQLite", "ESP32", "MVC"],
+      bullets: [
+        "Built the backend data pipeline in Node.js/Express — REST API and WebSocket server receiving real-time ECU telemetry from ESP32 devices at 10Hz, with SQLite persistence, boot session tracking, and automatic power breach detection against per-team vehicle class limits.",
+        "Designed and implemented the MVC backend architecture across controllers, services, and domain-split database layers, including parameterised queries, throttled disk persistence, and out-of-order frame handling for buffered reconnection dumps.",
+        "Contributed to a nine-person cross-disciplinary team (software, electrical, computer systems) delivering a race-day monitoring system with live voltage/current/power graphs, a judge-applied penalty and scoring engine, competition management, and CSV/PDF race report export.",
+      ],
+    },
   ],
   achievements: [
     {

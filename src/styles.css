@@ -222,19 +222,27 @@ html, body, #root {
 @media (max-width: 760px) {
   .stage { grid-template-columns: 1fr; }
   .character { order: 2; max-width: 520px; margin: 0 auto; }
-  .panel-wrap { order: 1; }
+  .panel-wrap { order: 1; min-width: 0; }
   .hud .bar { display: none; }
+}
+
+/* QuestSelect: on phones AND tablets (iPads ≤1024px) show ONLY the active chip
+   so the row can't stretch off-screen; the ◀ ▶ arrows page through the rest. */
+@media (max-width: 1024px) {
+  .quest-nav { max-width: 100%; overflow: hidden; }
+  .quest-chips { flex: 1; justify-content: center; overflow: hidden; min-width: 0; }
+  .quest-chip { display: none !important; }
+  .quest-chip.active {
+    display: flex !important; flex: 1; min-width: 0; justify-content: center;
+  }
+  .quest-chip.active .quest-label {
+    overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+  }
 }
 @media (max-width: 600px) {
   .tab { padding: 8px 9px; font-size: 7px; gap: 6px; }
   .tab .tab-icon { width: 10px; height: 10px; }
   .hud .brand-sub { display: none; }
-
-  /* QuestSelect: show only the active chip so the row can't stretch off-screen;
-     the ◀ ▶ arrows page through the rest. */
-  .quest-chips { flex: 1; justify-content: center; overflow-x: hidden; }
-  .quest-chip { display: none; }
-  .quest-chip.active { display: flex; flex: 1; justify-content: center; }
 }
 
 /* ===== character card (left) ===== */
